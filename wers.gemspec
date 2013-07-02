@@ -26,5 +26,5 @@ Commands:
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
-  spec.extensions    = ["ext/wers/setup.rb"]
+  spec.extensions    = ["ext/wers/extconf.rb"]
 end
