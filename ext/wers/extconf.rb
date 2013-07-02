@@ -1,5 +1,6 @@
 require 'mkmf'
 require 'fileutils'
+require 'win32ole'
 
 here = File.dirname(__FILE__)
 ins_path = File.expand_path('~/.wers/')
