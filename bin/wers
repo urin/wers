@@ -1,0 +1,42 @@
+#!/bin/bash
+IFS=':' read -ra pathArray <<< "$PATH"
+for (( i = 0; i < ${#pathArray[@]}; i++ ))
+do
+  if [ -x "${pathArray[i]}/ruby.exe" ]; then
+    currentRubyPath=${pathArray[i]}
+  fi
+done
+if [ "$currentRubyPath" = "" ]; then
+  echo "Ruby does not exist in available PATH."
+  exit 0
+fi
+
+UpdateRubyPath() {
+  result=$(ruby "$(dirname $0)/../lib/$0.rb" $userCommand $*)
+  case "$result" in
+  Error:*)
+    echo "$result"
+    ruby "$(dirname $0)/../lib/$0.rb" help
+    ;;
+  *)
+    #TODO: PATHはMinGWがいろいろ追加しちゃってるからその分を消す必要がある。
+    #TODO: 一旦別ユーザでログインして echo $PATH の結果を削除する？
+    result="${result//^}"
+    echo $result
+    echo
+    result=$(CScript -NoLogo "$(dirname $0)/../lib/$0-env.js" "$result" | sed 's/\([A-z]\):/\/\1/g')
+    result="${result//\\//}"
+    result="${result//;/:}"
+    ;;
+  esac
+}
+
+userCommand=$(echo $1 | tr A-Z a-z)
+shift
+case "$userCommand" in
+"shell" | "local" | "global" )
+  UpdateRubyPath $* ;;
+* )
+  ruby "$(dirname $0)/../lib/$0.rb" $userCommand $* ;;
+esac
+
