@@ -1,0 +1,49 @@
+#!/bin/bash
+IFS=':' read -ra pathArray <<< "$PATH"
+for (( i = 0; i < ${#pathArray[@]}; i++ ))
+do
+  if [ -x "${pathArray[i]}/ruby.exe" ]; then
+    currentRubyPath=${pathArray[i]}
+  fi
+done
+if [ "$currentRubyPath" = "" ]; then
+  echo "Ruby does not exist in available PATH."
+  unset currentRubyPath
+  exit 0
+fi
+
+UpdateRubyPath() {
+  local result=$(ruby "$(dirname $mainCommand)/../lib/$(basename $mainCommand).rb" $userCommand $*)
+  case "$result" in
+  Error:*)
+    echo "$result"
+    ruby "$(dirname $mainCommand)/../lib/$(basename $mainCommand).rb" help
+    ;;
+  *)
+    result="${result//^}"
+    result=$(echo "$result" | sed 's/\([A-z]\):/\/\L\1\E/g')
+    result="${result//\\//}"
+    result="${result//;/:}"
+    export PATH="$result"
+    ruby "$(dirname $mainCommand)/../lib/$(basename $mainCommand).rb" list
+    ;;
+  esac
+}
+
+mainCommand=$1
+shift
+userCommand=$(echo $1 | tr A-Z a-z)
+shift
+case "$userCommand" in
+  "init")
+    ruby "$(dirname $mainCommand)/../lib/$(basename $mainCommand).rb" init $currentRubyPath ;;
+  "shell" | "local" | "global")
+    UpdateRubyPath $* ;;
+  *)
+    ruby "$(dirname $mainCommand)/../lib/$(basename $mainCommand).rb" $userCommand $* ;;
+esac
+
+unset currentRubyPath
+unset mainCommand
+unset userCommand
+
