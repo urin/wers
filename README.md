@@ -16,15 +16,15 @@ Manage multiple Ruby versions for Microsoft Windows
 
 ## Commands:
 
-    init     Add current available Ruby path for global use.
-    list     List all Ruby versions known by wers.
-    add      Add specified version of Ruby to wers.
-    delete   Delete specified version of Ruby from wers.
-    global   Set or show the global Ruby version.
-    local    Set or show the local directory-specific Ruby version.
-    shell    Set or show the shell-specific Ruby version.
-    version  Show the current Ruby version.
-    help     Show this help.
+ - init     Initialize wers with current available Ruby.
+ - list     List all Ruby versions known by wers.
+ - add      Add specified version of Ruby to wers.
+ - delete   Delete specified version of Ruby from wers.
+ - global   Set or show the global Ruby version.
+ - local    Set or show the local directory-specific Ruby version.
+ - shell    Set or show the shell-specific Ruby version.
+ - version  Show the current Ruby version.
+ - help     Show this help.
 
 ## Contributing
 
