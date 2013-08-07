@@ -5,13 +5,13 @@ Manage multiple Ruby versions for Microsoft Windows
 ## Installation
 
 ```bat
-    gem install wers
+gem install wers
 ```
 
 ## Usage:
 
 ```bat
-    wers command [options...]
+wers command [options...]
 ```
 
 ## Commands:
