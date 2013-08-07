@@ -1,1 +1,1 @@
-module Wers; VERSION = "0.0.0"; end
+module Wers; VERSION = "0.0.1"; end
